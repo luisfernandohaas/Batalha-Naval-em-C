@@ -1,2 +1,49 @@
 # Batalha-Naval-em-C
 Este projeto é a simulação de um jogo de Batalha Naval.
+
+#include <stdio.h>
+
+// ------------------ FUNÇÃO PRINCIPAL ------------------ //
+int main() {
+    char linha[10]= {'A','B','C','D','E','F','G','H','I','J'};
+    int tabuleiro[10][10];{
+        for (int i=0; i<10; i++){
+            for (int j=0; j<10; j++)
+                tabuleiro[i][j]=0;
+            }
+    }
+
+    
+    // Posiciona os navios no tabuleiro
+    tabuleiro[2][4] = 3;  // navio na linha 3, coluna E
+    tabuleiro[3][4] = 3;  // navio na linha 4, coluna E
+    tabuleiro[4][4] = 3;  // navio na linha 5, coluna E
+    tabuleiro[7][7] = 3;  // navio na linha 8, coluna H
+    tabuleiro[7][8] = 3;  // navio na linha 8, coluna I
+    tabuleiro[7][9] = 3;  // navio na linha 8, coluna J
+
+
+    // Imprime o cabeçalho do tabuleiro
+    printf("     TABULEIRO BATALHA NAVAL \n");
+    printf("..");
+    for (int i=0; i<10; i++){
+       
+        printf("%2c ", linha[i]);
+    } 
+
+    printf("\n");
+
+    
+    // Imprime o tabuleiro
+    for (int i=0; i<10; i++){
+        printf("%2d ", i+1);
+        for (int j=0; j<10; j++){
+            
+            printf("%2d ", tabuleiro[i][j]);
+        }    
+        printf("\n");
+    }
+
+    return 0;
+    }
+
