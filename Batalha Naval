@@ -1,51 +1,133 @@
 #include <stdio.h>
 
+// ------------------ FUNÇÃO PARA APLICAR HABILIDADE ------------------ //
+// Aplica a matriz de habilidade no tabuleiro, centrada no ponto de origem
+void aplicarHabilidade(int tabuleiro[10][10], int habilidade[5][5], int origemLinha, int origemColuna) {
+    int centro = 2; // centro da matriz 5x5
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (habilidade[i][j] == 1) {
+                int alvoLinha = origemLinha + (i - centro);
+                int alvoColuna = origemColuna + (j - centro);
+
+                // garante que a posição está dentro do tabuleiro
+                if (alvoLinha >= 0 && alvoLinha < 10 && alvoColuna >= 0 && alvoColuna < 10) {
+                    // marca a área de efeito (5) sem sobrescrever navios (3)
+                    if (tabuleiro[alvoLinha][alvoColuna] == 0) {
+                        tabuleiro[alvoLinha][alvoColuna] = 5;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ------------------ FUNÇÃO PARA IMPRIMIR TABULEIRO ------------------ //
+void imprimirTabuleiro(int tabuleiro[10][10], char colunas[10]) {
+    printf("\n     TABULEIRO BATALHA NAVAL \n\n");
+
+    // cabeçalho
+    printf("..");
+    for (int i = 0; i < 10; i++) {
+        printf("%2c ", colunas[i]);
+    }
+    printf("\n");
+
+    // linhas
+    for (int i = 0; i < 10; i++) {
+        printf("%2d ", i+1);
+        for (int j = 0; j < 10; j++) {
+            printf("%2d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+// ------------------ FUNÇÃO PARA IMPRIMIR MATRIZ DE HABILIDADE ------------------ //
+void imprimirMatriz(int matriz[5][5], char *nome) {
+    printf("\nMATRIZ DE HABILIDADE %s \n", nome);
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            printf("%2d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
 // ------------------ FUNÇÃO PRINCIPAL ------------------ //
 int main() {
     char linha[10]= {'A','B','C','D','E','F','G','H','I','J'};
-    int tabuleiro[10][10];{
-        for (int i=0; i<10; i++){
-            for (int j=0; j<10; j++)
-                tabuleiro[i][j]=0;
-            }
+    int tabuleiro[10][10];
+
+    // inicializa o tabuleiro com água (0)
+    for (int i=0; i<10; i++){
+        for (int j=0; j<10; j++)
+            tabuleiro[i][j]=0;
     }
 
-    
-    // Posiciona os navios no tabuleiro
-    tabuleiro[2][4] = 3;  // navio na linha 3, coluna E
-    tabuleiro[3][4] = 3;  // navio na linha 4, coluna E
-    tabuleiro[4][4] = 3;  // navio na linha 5, coluna E
-    tabuleiro[7][7] = 3;  // navio na linha 8, coluna H
-    tabuleiro[7][8] = 3;  // navio na linha 8, coluna I
-    tabuleiro[7][9] = 3;  // navio na linha 8, coluna J
-    tabuleiro[0][0] = 3;  // navio na linha 1, coluna A
-    tabuleiro[1][1] = 3;  // navio na linha 3, coluna E
-    tabuleiro[2][2] = 3;  // navio na linha 4, coluna E
-    tabuleiro[5][6] = 3;  // navio na linha 5, coluna E
-    tabuleiro[4][7] = 3;  // navio na linha 8, coluna H
-    tabuleiro[3][8] = 3;  // navio na linha 8, coluna I
+    // posiciona navios (valor 3)
+    tabuleiro[2][4] = 3;  
+    tabuleiro[3][4] = 3;  
+    tabuleiro[4][4] = 3;  
+    tabuleiro[7][7] = 3;  
+    tabuleiro[7][8] = 3;  
+    tabuleiro[7][9] = 3;  
+    tabuleiro[0][0] = 3;  
+    tabuleiro[1][1] = 3;  
+    tabuleiro[2][2] = 3;  
+    tabuleiro[5][6] = 3;  
+    tabuleiro[4][7] = 3;  
+    tabuleiro[3][8] = 3;  
 
+    // ------------------ MATRIZ CONE ------------------ //
+    int matrizCone[5][5] = {0};
+    matrizCone[4][0] = 1; 
+    matrizCone[4][1] = 1;  
+    matrizCone[4][2] = 1; 
+    matrizCone[4][3] = 1;  
+    matrizCone[4][4] = 1;  
+    matrizCone[3][1] = 1;  
+    matrizCone[3][2] = 1; 
+    matrizCone[3][3] = 1;  
+    matrizCone[2][1] = 1;  
+    matrizCone[2][2] = 1;  
+    matrizCone[2][3] = 1; 
+    matrizCone[1][2] = 1;  
+    matrizCone[0][2] = 1; 
 
-    // Imprime o cabeçalho do tabuleiro
-    printf("     TABULEIRO BATALHA NAVAL \n");
-    printf("..");
-    for (int i=0; i<10; i++){
-       
-        printf("%2c ", linha[i]);
-    } 
+    // ------------------ MATRIZ CRUZ ------------------ //
+    int matrizCruz[5][5] = {0};
+    for (int i = 0; i < 5; i++) matrizCruz[i][2] = 1; // coluna central
+    for (int j = 0; j < 5; j++) matrizCruz[2][j] = 1; // linha central
 
-    printf("\n");
+    // ------------------ MATRIZ OCTAEDRO ------------------ //
+    int matrizOctaedro[5][5] = {0};
+    matrizOctaedro[0][2] = 1;  
+    matrizOctaedro[1][1] = 1; 
+    matrizOctaedro[1][2] = 1; 
+    matrizOctaedro[1][3] = 1; 
+    matrizOctaedro[2][0] = 1; 
+    matrizOctaedro[2][1] = 1; 
+    matrizOctaedro[2][2] = 1; 
+    matrizOctaedro[2][3] = 1; 
+    matrizOctaedro[2][4] = 1; 
+    matrizOctaedro[3][1] = 1; 
+    matrizOctaedro[3][2] = 1; 
+    matrizOctaedro[3][3] = 1; 
+    matrizOctaedro[4][2] = 1;  
 
-    
-    // Imprime o tabuleiro
-    for (int i=0; i<10; i++){
-        printf("%2d ", i+1);
-        for (int j=0; j<10; j++){
-            
-            printf("%2d ", tabuleiro[i][j]);
-        }    
-        printf("\n");
-    }
+    // ------------------ APLICA HABILIDADES ------------------ //
+    aplicarHabilidade(tabuleiro, matrizCone, 5, 5);      // cone no centro aproximado
+    aplicarHabilidade(tabuleiro, matrizCruz, 2, 2);      // cruz perto do canto superior esquerdo
+    aplicarHabilidade(tabuleiro, matrizOctaedro, 7, 7);  // octaedro no canto inferior direito
+
+    // ------------------ IMPRESSÃO FINAL ------------------ //
+    imprimirTabuleiro(tabuleiro, linha);
+    imprimirMatriz(matrizCone, "CONE");
+    imprimirMatriz(matrizCruz, "CRUZ");
+    imprimirMatriz(matrizOctaedro, "OCTAEDRO");
 
     return 0;
-    }
+}
+
+
